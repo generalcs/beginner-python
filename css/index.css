@@ -1,0 +1,38 @@
+.problem-module {
+    padding: 10px 0px 10px 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+} 
+
+.problem-module > p:first-of-type {
+    margin-right: 65px;
+}
+
+.practice-button {
+    color: black;
+    text-decoration: none;
+    
+    background: #e3e3e3;
+    border-radius: 10px;
+    padding: 10px;
+    transition-duration: 0.25s;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.practice-button:hover {
+    background: #f0f0f0;
+}
+
+#page-title {
+    margin-top: 30px;
+}

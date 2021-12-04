@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Python Review</title>
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Abel&family=Prompt:wght@500&family=Roboto+Mono&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <h1 id="header-title">Beginner's Python Review</h1>
+            <div id="header-links">
+                <a href="../index.html">Articles</a>
+                <a>Exercises</a>
+                <a>About</a>
+            </div>
+        </header>
+        <div class="inner-body">
+            <div class="article">
+                <div class="article-body">
+                    <h1 class="article-title">N evenly-spaced segments or lines</h1>
+                    <p>It's a challenge to draw objects spaced evenly across a specified dimension. You'll have to take care of many implementation details such as calculating the position of each object and deciding whether you should add -1 for 0-based indexing or not. However, with practice and review, these details will be easier to understand. In the next section, we will discuss a crucial difference that will change how you approach the problem.</p>
+                    
+                    <h2>N objects or N spaces between the objects?</h2>
+                    <p>When working with graphics, you will often encounter something called a fencepost condition. The concept behind this term is that a fence has N fenceposts but only has N - 1 segments connecting those fenceposts (look at or draw a picture of a fence to see why this is true). If you want to learn how to avoid this condition generally, you can read <a href="https://betterexplained.com/articles/learning-how-to-count-avoiding-the-fencepost-problem/">an article</a> about differentiating spans versus counts or the Wikipedia page for <a href="https://en.wikipedia.org/wiki/Off-by-one_error#:~:text=An%20off%2Dby%2Done%20error,too%20many%20or%20too%20few.">off-by-one errors</a>.</p>
+                    
+                    <p>For our purposes, you will most likely to be asked to draw N objects rather than separate the objects with N spaces. Therefore, you will have N - 1 spaces in between the objects. These objects could be shapes, lines, or even just the starting points of lines as in the Draw-1 problem on the final review handout. You should always check and confirm that this is the case despite knowing what is likely.</p>
+                    
+                    <h2>Solving Draw-1</h2>
+                    <p>We will be covering the Draw-1 problem as an example of N objects. This problem requires that we draw N lines whose starting points are evenly spaced across the top of the canvas but whose ending points are at the bottom right of the canvas. You can find a diagram and a more detailed description of the problem on the <a href="https://web.stanford.edu/class/cs106a/handouts_w2021/final-prep.html">final review handout</a>. Ensure that you are familiar with the problem before reading about the different approaches that you can take. </p>
+                    
+                    <h3>Method 1: Calculate x-offset within loop</h3>
+                    <p><b>This method is harder to conceptualize, but it is worth taking a look first and then coming back with a renewed understanding after reading about Method 2.</b></p>
+                    <p>In this approach, we calculate the x-offset using the loop variable (looping from 0 to N - 1), the width of the canvas, and N (the number of lines) with an overall expression within the loop.</p>
+                    <p><b>Code</b></p>
+                    <pre><div class="code">
+def draw(canvas, left, top, width, height, n):
+    for i in range(n):
+        x_add = (i / (n - 1)) * (width - 1)
+        x1 = left + x_add
+        y1 = top
+
+        x2 = left + width - 1
+        y2 = top + height - 1
+
+        canvas.draw_line(x1, y1, x2, y2)
+                    </div></pre>
+                    
+                    <p><b>Why width - 1? Why height - 1?</b></p>
+                    <p>Whenever we are doing drawing, we need to remember that sizes and dimensions are 1-indexed, while the location of pixels on a canvas are 0-indexed. This means that if we want to draw on the last pixel of a canvas, we need to use width - 1 or height - 1. Here, when we are calculating the x_add offset, we understand that the last line should fall on the last column of pixels, so we should use width - 1 rather than width.</p>
+                    
+                    <p><b>Why N - 1?</b></p>
+                    <p>Because we are drawing N lines, we must have N - 1 spaces between those lines. However, the use of N - 1 is not clear when it is involved in such a complicated fraction. Read about Method 2 to understand why the fraction works.</p>
+                    
+                    <h3>Method 2: Calculate segment width outside of loop</h3>
+                    <p>This next approach is no functionally different from the previous approach, but it takes the complex fraction for x_add and assigns a part of it to a variable: section_width.</p>
+                    <p><b>Code</b></p>
+                    <pre><div class="code">
+def draw(canvas, left, top, width, height, n):
+    section_width = (width - 1) / (n - 1)
+    for i in range(n):
+        x_add = i * section_width
+        x1 = left + x_add
+        y1 = top
+
+        x2 = left + width - 1
+        y2 = top + height - 1
+
+        canvas.draw_line(x1, y1, x2, y2)
+                    </div></pre>
+                    <p>We see that this method simply takes the complex fraction in Method 1 and decomposes it into a section_width variable multiplied by i. It's now immediately clear that i is the number of section_widths we want to have as an offset, and that section_width is defined such that the width is distributed evenly to N - 1 spaces. We use N - 1 as the divisor because N is the number of lines, so we want to divide width into N - 1 spaces between those lines according to the fencepost condition mentioned above.</p>
+                    
+                    <p>During the quarter, you may have been taught and accustomed to using the first approach verbatim. We see that even using the first approach, the fraction could be written better to express the existence of a section width: x_add = i * (width - 1) / (n - 1). Writing mathematical expressions in code requires clarity, so make sure you understand how these expressions are formed and write them with the intention to reveal the how.</p>
+                </div>
+                <div class="article-navigation">
+                    <a>&#60;&ensp;Previous Article </a>
+                    <a>Next Article &ensp;></a>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p id="footer-credit">Created by Samuel Do</p>
+        </footer>
+    </body>
+</html>
